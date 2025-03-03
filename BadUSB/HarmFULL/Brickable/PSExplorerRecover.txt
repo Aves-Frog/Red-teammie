@@ -1,0 +1,23 @@
+REM
+REM
+REM Title: 			PSExplorerRecover
+REM Author: 		aves-frog
+REM Description: 	Turns back on Windows Explorer, effectively crashing file operations and limiting user input
+REM Target:			Windows 7+
+REM 
+REM
+
+REM *If this script doesn't work, please try removing all empty lines and the REM_Block*
+
+DEFAULTDELAY 5
+
+REM *Open PowerShell*
+GUI r
+DELAY 500
+STRING powershell.exe
+ENTER
+DELAY 5000
+
+REM 
+STRING Start-Process -Name "explorer"; exit
+ENTER
