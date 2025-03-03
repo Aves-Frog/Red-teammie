@@ -18,6 +18,10 @@ STRING powershell.exe
 ENTER
 DELAY 5000
 
-REM 
+REM *To make the program loop remove REM from 'REM STRING 1:...'
+REM STRING 1: Stop-Process -Name "explorer"; GOTO 1:; exit
+ENTER
+
+REM Normal Operation (Best add REM before 'STRING' when using the loop function)
 STRING Stop-Process -Name "explorer"; exit
 ENTER
