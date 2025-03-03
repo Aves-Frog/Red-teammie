@@ -2,7 +2,7 @@ REM
 REM
 REM Title: 			PSExplorerRecover
 REM Author: 		aves-frog
-REM Description: 	Turns back on Windows Explorer, effectively crashing file operations and limiting user input
+REM Description: 	Turns back on Windows Explorer
 REM Target:			Windows 7+
 REM 
 REM
