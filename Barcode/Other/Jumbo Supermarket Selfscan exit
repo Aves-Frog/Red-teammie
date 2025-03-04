@@ -1,0 +1,19 @@
+After comparing 3 different receipts from the Jumbo Supermarket self scan I found that the barcode was really easy to decode.
+In fact, most data references can be found on the receipts themselves in plain text.
+
+The barcode containing 20 digits (Codex GS1-128 or EAN 128) is split up in the following clusters:
+[number 6, most likely to identify the code as a receipt rather than a product] [The shop code: XXXX] [Position, aka which scan unit: XXX] [Transaction nr: XXXX] [Date: MMDDYYYY]
+
+With this a valid code could be: 61234001999903042025
+
+I feel it is within reason to expect the checkout gate to only check on a few parimeters (given bandwidth restrictions and lookup speed); namely the first number to be a 6, the code of the shop to be correct, 
+the position or terminal to be valid/existing, and lastly the date to be correct. These few parimeters would remove most 'honest' users from making a mistake, without asking too much processing power.
+Should this be correct the transaction ID could be random as this would then only be used at the manned counters to process returns, as such this could be random for all the gate would care.
+
+From this we can extrapolate a script to generate a valid barcode from scratch (assuming no check is made to the database at the gate);
+
+6 + [Shop code] + [low number such as 005] + [random number with 4 digits] + [current date]
+
+This obviously would not be difficult to generate and as such is a potential weak spot in the system allowing thieves to exit without paying.
+For obvious reasons this has not been confirmed by testing, nor should you test this yourself.
+I would however recommend you to cross compare these findings with other self checkout services as this may reveil a bigger issue.
