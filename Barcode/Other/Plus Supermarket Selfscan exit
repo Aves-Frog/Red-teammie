@@ -1,0 +1,20 @@
+As mentioned before (See Jumbo Supermarket Selfscan exit) I intended to compare other self scan receipt barcodes in order to cross compare similar weaknesses.
+This time I inspected a receipt from the Plus supermarket. Again some data was elsewhere found in plain text, this time however it wasn't literally pointed out.
+
+The barcode containing 14 digits (this time) (Codex GS1-128 or EAN 128) is split up in the following clusters:
+[number 0, most likely to identify the code as a receipt rather than a product] [The scan unit code: XX] [Receipt nr: XXXXX] [Date: YYMMDD]
+Note that this time, compared to the Jumbo Supermarket the shop code seems to be missing, this could indicate another security issue.
+
+With this a valid code could be: 00101234250305
+
+I feel it is within reason to expect the checkout gate to only check on a few parimeters (given bandwidth restrictions and lookup speed); namely the first number to be a 0,  
+the counter or scan unit to be valid/existing, and lastly the date to be correct. These few parimeters would remove most 'honest' users from making a mistake, without asking too much processing power.
+Should this be correct the transaction ID could be random as this would then only be used at the manned counters to process returns, as such this could be random for all the gate would care.
+
+From this we can extrapolate a script to generate a valid barcode from scratch (assuming no check is made to the database at the gate);
+
+0 + [low number such as 005] + [random number with 5 digits] + [current date]
+
+This obviously would not be difficult to generate and as such is a potential weak spot in the system allowing thieves to exit without paying.
+For obvious reasons this has not been confirmed by testing, nor should you test this yourself.
+I would however recommend you to cross compare these findings with other self checkout services as this may reveil a bigger issue.
