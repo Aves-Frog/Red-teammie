@@ -1,0 +1,23 @@
+While going out I found a NFC Advertisement bar (seemingly) branded Check it out now!
+I decided to check out the data I found on it, and what policies it used.
+
+To my surprise I found that these NFC bars are not encoded to protect against overwriting, probably to enable technicians to change what ad is displayed.
+This would mean that any NFC enabled device with writing capabilities would be able to display their own data or webhook.
+This is obviously a security issue as this could lead to exploits and data theft.
+
+Here's how these bars are set up to work:
+Tag type: ISO 14443-3A (NXP-NTAG213)
+Technology: NfcA, MifareUltralight, Ndef
+Serial number: XX:XX:XX:XX:XX:XX:XX
+ATQA: 0x0044
+SAK: 0x00
+Memory: 180bytes over 45 pages
+Data form: NFC Forum Type 2
+Writable: YES
+Can be made read only: Yes
+Record 1: Https (web of ad)
+
+Note that these chips could be programmed to be read only, but aren't.
+Exploiters could use this functionality to take over the entire bar, more records could be made.
+
+These NFC chips also contain a QR code which appears to be static.
