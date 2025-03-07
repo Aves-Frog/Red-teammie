@@ -40,11 +40,34 @@ Other chunks that needn't change can be stored as well.
 
 We now have (as for the previous example): 6-1234-XXX-XXXX-XXXXXXXXX
 
+Now the Terminal number is the main argument that differs the Hardcoded solution from the Semi dynamic solution.
+Which also for the Hardcoded solution has a few options.
+The most logical option would be to have one variable (int32) reserved for storing the amount of terminals (and thus the valid values).
+Example: for 5 counters -> static var 4 (keep in mind that integers start at 0).
+Now actually starting the var at 1, i.e. flagging number 0 (or 000 as found in actual barcodes) as fraudulent would be a valid method to check this chunks validity aside from values above specified.
+
+One downside of this method is that counters that are taken out of service cannot be flagged as invalid without overhauling the software.
+Obviously this could be solved by adding a second code snipped that specifies and checks out of service counters (that are manually coded in).
+
+Just for fun we could theorize other options that stay hardcoded. Such we could make a script that specifically defines each counter option. 
+Just for fun and for the sake of ruining code efficiency we can even convert this into an if-statement list. 
+Or even worse, just so the poor lonely CPU Hertz have something to do, create a class function that seeks to define the counter number and links to hardcoded class functions that all have the same function with their respective number.
+This thought experiment is going off the rails, but it may show how optimized a Hardcoded solution may.
+
+From here we have: 6-1234-001-XXXX-XXXXXXXX
+
 Lastly assuming the scan unit has a time crystal (as do most motherboards) the time can be gathered locally, else using network connectivity the current data can be gathered.
 Fun fact, even if no network connection or crystal is present the unit would still be able to note the date by simply counting upwards from the point of installation.
 This is because the unit doesn't need to be precise in the hours. In theory a unit with a daily timing error or 2 minutes per day could be service free for 270 days. 
 
 <sub>Assuming the unit is installed at midnight and the shop opens at 9am: 2minutes over 9 hours (to assume not one second of error during the open hours), 9hrs/2min -> 540/2 = 270. I.e. nearly one year </sub>
+
+This gives us: 6-1234-001-XXXX-03072025
+
+The only thing missing is the transaction number, but we can simply ignore this chunk. If you would really like to you could define specific numbers to check for errors such as 0000, 9999, 1234, etc.
+But realistically there isn't much point.
+As noted before these numbers simply loop whenever the highest number fitting (9999 or other defined) is hit at the counter.
+This is where the Database solution shines, with it's database connection it can check in reasonable time whether this specific transaction is valid, or even if this transaction has already exited the gate.
 
 ### Limitations
 
