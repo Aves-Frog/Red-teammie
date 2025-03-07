@@ -108,11 +108,30 @@ This solution requires a bit more than the Hardcoded solution though:
 - Local storage, while most operations should go through RAM we need a place to offload data
 
 ### Functionality
+Depending on customer and technician preferences a databse based scanning unit would compare most of the data from the barcode against the database.
+This could be done locally or by sending the barcode to a dedicated server, the process would be nearly similar in both cases. I would design the Database solution as such:
 
+First check the recipt id number, this shouldn't ever need to change so can be hardcoded.
+The shop code should also not need to change, however if really desired the unit could be saved in a different dataset and be assigned a shop code based on mac-address or similar.
+This would allow a unit to be swapped and updated externally.
+While I can see the use case, I feel this would not be worth the cost at all.
+
+Based on the shop code a check could be made to the database to see what counters are marked as operative, from there the unit could check the Terminal value.
+And the date could be grabbed from this same database.
+Now while this sounds quite niche, this could actually be worth the bandwidth in some usecases to ensure all scanning units, pc's, and counters use the same date, and in case of a blackout or other event prevent the need of technicians to manually resync.
+
+From the combination of the shop id, terminal and date a lookup request could be made to see if the transaction id is valid.
 
 ### Limitations
 While mitigating some of the previous limitations we still have limitations with this solution:
 - The biggest one being cost, technicians, bandwith, and hardware costs will be significantly higher
+- The time to check the validity of the receipt will significantly increase
+- In case of network loss or latency a transaction could be delayed or lost, causing the gate not to open
+
+## Security exploits
+Continueing to assume we operate using a non database connected solution 
+
+<!-- As anyone who has accidentally tried to exit using the wrong or crumbled up receipt can tell, you will still get a scan (or if you walked passed these scanners wearing a high vis jacket very many (if you know you know)). -->
 
 [^1]: https://www.gs1us.org/upcs-barcodes-prefixes/gs1-128
 [^2]: Plus and Jumbo supermarkets as found here (https://github.com/Aves-Frog/Flipper/new/main/Barcode/SupermarketSelfCheckout) 
