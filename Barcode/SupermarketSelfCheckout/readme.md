@@ -33,6 +33,7 @@ It really doesn't get much simpler in software.
 Given the Hardcoded and Semi dynamic solutions function slightly differently I will explain them individually.
 
 **Hardcoded solution:**
+
 Within the code that checks the validity of the barcode we hardcode (define them within the code, to avoid needing to look them up) as many chunks as possible.
 It stands to reason that the first digit, the static Receipt digit, doesn't need to change, so this could be hardcoded.
 Next to that we can also assume that units get placed in the shop by a technician who has access to the unit's software, as such we can hardcode the shop code as well.
@@ -68,6 +69,23 @@ The only thing missing is the transaction number, but we can simply ignore this 
 But realistically there isn't much point.
 As noted before these numbers simply loop whenever the highest number fitting (9999 or other defined) is hit at the counter.
 This is where the Database solution shines, with it's database connection it can check in reasonable time whether this specific transaction is valid, or even if this transaction has already exited the gate.
+
+**Semi dynamic solution:**
+
+If we want to have a little more control on the fly we can use a lookup file (stored locally) such as an XML or JSON file.
+Using such a file we can define the values of the receipt identifier (6) and the shop code in the lookup file, albeit with little realistic benefit.
+
+More benefit can be found using this file to define the counters. This can simply be done by an integer such as in the Hardcoded option, or we can opt to define valid values.
+Hence allowing technicians with less needed expertise (and lets face it less risk of bricking the device by not coding directly into the heart of the software) to quickly take Terminal numbers out of operation.
+Another benefit is that you can change this lookup file (for example by USB connection or telnet) on the fly.
+
+We could even build a platform that allows managers of the shop to take out counters from their pc. Or even better, have the counters themselves mark themselves as out of service (with a delay to allow checked out customers to exit).
+
+As with the counters so too could the date be changed automatically by software on a pc.
+
+I feel this Semi dynamic option would be a good sales pitch, 'empower your people and machines, reduce technician costs', but in all honestly not much more than a gimick.
+Especially since this option still does not allow for transaction number checking as it isn't connected to a database.
+Granted, this could be implemented, but that removes the benefit of not being plugged into a database natively, while introducing more delays.
 
 ### Limitations
 
