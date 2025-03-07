@@ -88,14 +88,31 @@ Especially since this option still does not allow for transaction number checkin
 Granted, this could be implemented, but that removes the benefit of not being plugged into a database natively, while introducing more delays.
 
 ### Limitations
+While being a fast, cheap, and pretty low skill solution there are still some big limitations:
+- This solution requires software technicians to operate locally for any changes or bugs
+  - Alternatively a sofware package could be provided to make smaller changes by untrained personel, which still requires local fixing
+- Units need to be reprogrammed (via change in lookup file value or literal code changes) to change counters, shop id, or time when desynced
+- The biggest limitation; there is no (feasable) way to check transaction numbers, leaving a security flaw
 
 ## A database integrated solution
+To mitigate (some of) the limitations mentioned above we can implement a Database solution. This would allow data to be stored in the cloud, and as such be changed externally by dedicated personel.
+The biggest advantage of this solution is the ability to check the validity of transaction codes and patching this security hole.
 
 ### Requirements
+This solution requires a bit more than the Hardcoded solution though:
+- We need a unit that is capable of negotiating with the database (this means more CPU power and more RAM to store data locally)
+- A managed server with the database, this should already be present to handle returns
+- More skilled technicians who are familliar with software and database scripts such as SQL
+- Bandwidth for the scan units
+- Possibly dedicated network channels for these units (depending on how many there are and the bandwidth requirements)
+- Local storage, while most operations should go through RAM we need a place to offload data
 
 ### Functionality
 
+
 ### Limitations
+While mitigating some of the previous limitations we still have limitations with this solution:
+- The biggest one being cost, technicians, bandwith, and hardware costs will be significantly higher
 
 [^1]: https://www.gs1us.org/upcs-barcodes-prefixes/gs1-128
 [^2]: Plus and Jumbo supermarkets as found here (https://github.com/Aves-Frog/Flipper/new/main/Barcode/SupermarketSelfCheckout) 
