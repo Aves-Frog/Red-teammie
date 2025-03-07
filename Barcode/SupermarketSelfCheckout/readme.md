@@ -129,9 +129,31 @@ While mitigating some of the previous limitations we still have limitations with
 - In case of network loss or latency a transaction could be delayed or lost, causing the gate not to open
 
 ## Security exploits
-Continueing to assume we operate using a non database connected solution 
+Continueing to assume we operate using a non database connected solution we have a couple of security exploits that could happen, below I mentioned the ones I feel are most prevelant.
+Note that I am only mentioning exploits that could happen to the exit scan unit, without destruction.
 
-<!-- As anyone who has accidentally tried to exit using the wrong or crumbled up receipt can tell, you will still get a scan (or if you walked passed these scanners wearing a high vis jacket very many (if you know you know)). -->
+### Transaction fudging
+Since we have established the scan units do not check for transaction id we can simply enter a random number in a fabricated barcode, while keeping the checked chunks untouched.
+
+The biggest issue with this is that this exploit is pretty obvious visually.
+Any security guard or personel standing around or watching CCTV will notice a random device being used instead of a receipt.
+This could in theory be mitigated by using a receipt printer. This btw is the reason receipts have a custom backing depending on the store, it's just one more way to authenticate the receipt.
+This issue is harder to spot in stores which allow members to exit using their loyalty cards as exit codes.
+These barcodes are commonly stored on a mobile device such as a phone card manager, and therefore would not raise alarms when a phone with a phoney barcode would exit.
+This ofcourse is best mitigated by using a database solution.
+
+### Unit overloading
+As anyone who has accidentally tried to exit using the wrong or crumbled up receipt can tell, you will still get a scan (or if you walked passed these scanners wearing a high vis jacket very many (if you know you know)).
+This means that we could overload the unit by sending a lot of data into the scanner or into the script.
+
+The scanner could possibly be overloaded by sending constant data. One way this could be done is by using reflective tape. The reflection makes most scanners go wild trying to decode the constantly changing paterns.
+But given the low power usage of scanning this exploit isn't very practical. Besides, most scanners will return null when they cannot define the barcode type, as such this exploit wouldn't work.
+
+At the script side a large amount of codes that conform to the standard could overload the software causing a failure (especially on network connected units such as database connected units as they have more latency and a bandwidth restriction). Now building safety code (in most countries) requires security measures and doors to open in case of failure, fire hazard, or power outage. Assuming the local code includes checkout gates to these measures overloading the unit could cause it to fall into fire open mode.
+Probably the easiest countermeasure to this exploit is one that I see used in nearly all shops I have been to, namely to have a delay between codes scanned. 
+If you need to wait say 3 seconds between barcode scan it not only allows honest users to adjust their barcode if it got read incorrectly, but also disallows people to overload the software via barcodes.
+
+Another mitigation to this exploit is to create an audible clue. Some scan units I have encountered play a beep sound when they attempt a scan, a constant string of beeps would alert standers by and security personel.
 
 [^1]: https://www.gs1us.org/upcs-barcodes-prefixes/gs1-128
 [^2]: Plus and Jumbo supermarkets as found here (https://github.com/Aves-Frog/Flipper/new/main/Barcode/SupermarketSelfCheckout) 
