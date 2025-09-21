@@ -1,5 +1,5 @@
-# Flipper
-Collection of Flipper scripts I've made or changed.
+# Red teammie
+Collection of Flipper scripts I've made or changed. Now recently added other ways to have fun!
 
 These scripts are created and uploaded as a proof of concept, use is strictly for educational and legal testing purposes.
 I'm not resposible for any illegal usage of these scripts.
